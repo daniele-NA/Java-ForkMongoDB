@@ -8,6 +8,8 @@ import utils.Overloaded;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -91,7 +93,6 @@ public non-sealed class QueryPanel extends DatabaseConnection {
             // Leggi il file JSON e convertilo in una HashMap
             File file = new File(pathToJsonFile); // Sostituisci con il percorso del tuo file JSON
             mapJson = objectMapper.readValue(file, HashMap.class);
-
             Document document = new Document(mapJson);
             collection.insertOne(document);
 
@@ -113,6 +114,7 @@ public non-sealed class QueryPanel extends DatabaseConnection {
     public void closeAll(){
         super.closeConnection();
     }
+
 }
 
 

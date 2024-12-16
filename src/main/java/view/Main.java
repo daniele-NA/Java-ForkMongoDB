@@ -20,11 +20,11 @@ import static java.lang.System.out;
  * @see utils.Overloaded
  * @see QueryPanel
  */
-public class Main  {
+public class Main {
     private static Scanner push;
     private static QueryPanel queryPanel;  //istanza del pannello di controllo
     private static Map<String, Object> map;   //oggetto che mappa chiavi e valori in input
-    private static ForkAlgorithm<String> forkAlgorithm=new ForkAlgorithm<>();  //algoritmo ricorsivo per la stampa
+    private static ForkAlgorithm<String> forkAlgorithm = new ForkAlgorithm<>();  //algoritmo ricorsivo per la stampa
 
 
     public static void main(String[] args) {
@@ -47,26 +47,41 @@ public class Main  {
         }
 
         out.println("""
-                               \s
-                d) sets a default collection name         \s
-                e) exit
-                s) select all
-                i) insert
-                m) insert many
-                               \s
-               \s""");
+                                \s
+                 d) sets a default collection name         \s
+                 e) exit
+                 s) select all
+                 i) insert
+                 p) insert with path file
+                 m) insert many
+                                \s
+                \s""");
         while (true) {
             push = new Scanner(System.in);
-            out.print("Enter choice : ");
+            out.print(System.lineSeparator()+"Enter choice : ");
             char choice = push.next().toLowerCase().charAt(0);
             switch (choice) {
-                case 'e' -> queryPanel.closeAll();  //chiusura connesione database
+                case 'e' -> queryPanel.closeAll();  //chiusura connessione database
                 case 's' -> out.println(forkAlgorithm.print(queryPanel.selectAll()));
                 case 'i' -> queryPanel.insert(insertData());
+                case 'p' -> {
+                    out.print("enter json's path : ");
+
+                    /*
+                    controllo e sistemazione del path
+                     */
+                    String path = push.next().trim();
+                    path=path.replaceAll("\"","");
+                    path=path.replaceAll("\\\\","//").trim();
+                    out.print(path);
+                   try {
+                       queryPanel.insert(path);
+                   }catch (RuntimeException e) {
+                       err.println(e.getMessage());
+                   }
+                }
                 case 'm' -> {
-
-
-                    List<Document> documents= new ArrayList<>();
+                    List<Document> documents = new ArrayList<>();
                     out.print("\nEnter how many different jsons you want to send : ");
                     final int numberOfDocuments = push.nextInt();
                     for (int i = 0; i < numberOfDocuments; i++) {
